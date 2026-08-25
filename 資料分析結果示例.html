@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>資料分析結果示例</title>
+  <style>*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  padding: 24px; line-height: 1.6; font-size: 14px; overflow-y: auto;
+  --canvas-bg: #ffffff; --canvas-fg: #1a1a2e; --canvas-border: #e2e2ea;
+  --canvas-card-bg: #f8f8fc; --canvas-muted: #6b7280; --canvas-accent: #0081f2;
+  --canvas-success: #28a745; --canvas-warning: #eab308; --canvas-error: #d32f2f;
+  background: var(--canvas-bg); color: var(--canvas-fg);
+}
+h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 0.75em; }
+h2 { font-size: 1.25rem; font-weight: 600; margin-bottom: 0.5em; }
+h3 { font-size: 1.1rem; font-weight: 600; margin-bottom: 0.5em; }
+p { margin-bottom: 0.75em; }
+a { color: var(--canvas-accent); }
+table { width: 100%; border-collapse: collapse; margin-bottom: 1em; font-size: 0.9em; }
+thead { border-bottom: 2px solid var(--canvas-border); }
+th { text-align: left; padding: 8px 12px; font-weight: 600; color: var(--canvas-muted); font-size: 0.85em; text-transform: uppercase; letter-spacing: 0.03em; }
+td { padding: 8px 12px; border-bottom: 1px solid var(--canvas-border); }
+tbody tr:hover { background: var(--canvas-card-bg); }</style>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
+</head>
+<body>
+<h2>資料分析完成報告</h2>
+<p>已分析 10,000 筆銷售記錄，時間範圍：2024/01 - 2024/12</p>
+
+
+<div style="display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:16px">
+<div style="background:var(--canvas-card-bg);border:1px solid var(--canvas-border);border-radius:8px;padding:14px 16px;text-align:center">
+  <div style="font-size:2rem;font-weight:700;line-height:1.2">$2.4M</div>
+  <div style="font-size:0.8rem;color:var(--canvas-muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px">總銷售額</div><div style="font-size:0.85rem;margin-top:4px;color:var(--canvas-success)">+18%</div>
+</div>
+<div style="background:var(--canvas-card-bg);border:1px solid var(--canvas-border);border-radius:8px;padding:14px 16px;text-align:center">
+  <div style="font-size:2rem;font-weight:700;line-height:1.2">$245</div>
+  <div style="font-size:0.8rem;color:var(--canvas-muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px">平均訂單</div><div style="font-size:0.85rem;margin-top:4px;color:var(--canvas-success)">+5%</div>
+</div>
+<div style="background:var(--canvas-card-bg);border:1px solid var(--canvas-border);border-radius:8px;padding:14px 16px;text-align:center">
+  <div style="font-size:2rem;font-weight:700;line-height:1.2">3,847</div>
+  <div style="font-size:0.8rem;color:var(--canvas-muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px">客戶數</div><div style="font-size:0.85rem;margin-top:4px;color:var(--canvas-error)">-2%</div>
+</div>
+<div style="background:var(--canvas-card-bg);border:1px solid var(--canvas-border);border-radius:8px;padding:14px 16px;text-align:center">
+  <div style="font-size:2rem;font-weight:700;line-height:1.2">3.2%</div>
+  <div style="font-size:0.8rem;color:var(--canvas-muted);text-transform:uppercase;letter-spacing:0.05em;margin-top:4px">轉換率</div><div style="font-size:0.85rem;margin-top:4px;color:var(--canvas-success)">+0.4%</div>
+</div>
+</div>
+
+<div style="display:flex;gap:16px;margin-bottom:16px">
+<div style="flex:1;min-width:0"><div style="height:300px;margin-bottom:16px"><canvas id="chart-dr14t5"></canvas></div>
+<script>
+(function(){
+  var cfg = {"type":"line","data":{"labels":["1月","2月","3月","4月","5月","6月","7月","8月","9月","10月","11月","12月"],"datasets":[{"label":"月銷售額 ($K)","data":[180,195,210,205,230,250,280,265,240,255,270,290],"borderColor":"#6366f1","backgroundColor":"rgba(99, 102, 241, 0.1)","tension":0.4,"fill":true}]},"options":{"responsive":true,"plugins":{"legend":{"display":true}}}};
+  cfg.options = cfg.options || {};
+  cfg.options.responsive = true;
+  cfg.options.maintainAspectRatio = false;
+  new Chart(document.getElementById('chart-dr14t5'), cfg);
+})();
+</script></div>
+<div style="flex:1;min-width:0"><div style="height:300px;margin-bottom:16px"><canvas id="chart-b2blv8"></canvas></div>
+<script>
+(function(){
+  var cfg = {"type":"bar","data":{"labels":["服飾","電子產品","家居","運動","其他"],"datasets":[{"label":"銷售額分佈","data":[650,720,520,380,180],"backgroundColor":["#6366f1","#8b5cf6","#ec4899","#f59e0b","#10b981"]}]}};
+  cfg.options = cfg.options || {};
+  cfg.options.responsive = true;
+  cfg.options.maintainAspectRatio = false;
+  new Chart(document.getElementById('chart-b2blv8'), cfg);
+})();
+</script></div>
+</div>
+
+<h3>銷售排名前 10 的商品</h3>
+
+
+<table><thead><tr><th>排名</th><th>商品名稱</th><th>銷售件數</th><th>銷售額</th><th>同比增長</th></tr></thead><tbody>
+<tr><td>1</td><td>藍色T恤 M尺寸</td><td>1,247</td><td>$156,875</td><td>+23%</td></tr>
+<tr><td>2</td><td>無線耳機 Pro</td><td>892</td><td>$135,000</td><td>+18%</td></tr>
+<tr><td>3</td><td>黑色牛仔褲 32號</td><td>756</td><td>$98,280</td><td>+12%</td></tr>
+<tr><td>4</td><td>瑜伽墊 6mm</td><td>634</td><td>$50,720</td><td>+35%</td></tr>
+<tr><td>5</td><td>LED台燈</td><td>621</td><td>$61,050</td><td>+8%</td></tr>
+<tr><td>6</td><td>登山鞋 Size 10</td><td>589</td><td>$82,460</td><td>+41%</td></tr>
+<tr><td>7</td><td>棉質枕頭 2入</td><td>542</td><td>$32,520</td><td>-5%</td></tr>
+<tr><td>8</td><td>智能手錶</td><td>498</td><td>$99,600</td><td>+52%</td></tr>
+<tr><td>9</td><td>防曬乳 SPF50</td><td>467</td><td>$23,350</td><td>+28%</td></tr>
+<tr><td>10</td><td>運動背包</td><td>445</td><td>$31,150</td><td>+11%</td></tr>
+</tbody></table>
+
+<h3>客戶分析</h3>
+
+
+<div style="display:flex;gap:16px;margin-bottom:16px">
+<div style="flex:1;min-width:0"><div style="height:300px;margin-bottom:16px"><canvas id="chart-wrekfl"></canvas></div>
+<script>
+(function(){
+  var cfg = {"type":"pie","data":{"labels":["新客戶","回頭客","VIP"],"datasets":[{"data":[35,48,17],"backgroundColor":["#6366f1","#8b5cf6","#ec4899"]}]}};
+  cfg.options = cfg.options || {};
+  cfg.options.responsive = true;
+  cfg.options.maintainAspectRatio = false;
+  new Chart(document.getElementById('chart-wrekfl'), cfg);
+})();
+</script></div>
+<div style="flex:1;min-width:0"><div style="height:300px;margin-bottom:16px"><canvas id="chart-rhryy3"></canvas></div>
+<script>
+(function(){
+  var cfg = {"type":"bar","data":{"labels":["18-25","26-35","36-45","46-55","55+"],"datasets":[{"label":"客戶年齡分布","data":[420,820,1200,980,427],"backgroundColor":"#10b981"}]}};
+  cfg.options = cfg.options || {};
+  cfg.options.responsive = true;
+  cfg.options.maintainAspectRatio = false;
+  new Chart(document.getElementById('chart-rhryy3'), cfg);
+})();
+</script></div>
+</div>
+
+<h3>關鍵發現</h3>
+<ol>
+<li><strong>季節性波動明顯</strong> — Q3 銷售高峰（7月），Q4 持續成長</li>
+<li><strong>品類差異大</strong> — 電子產品銷售額占 30%，但服飾件數最多</li>
+<li><strong>客戶粘性提升</strong> — 回頭客占 48%，較去年增加 12%</li>
+<li><strong>35-45 歲客群</strong> — 購買力最強，貢獻 40% 銷售額</li>
+<li><strong>登山鞋爆款</strong> — 41% 同比增長，需補充庫存</li>
+</ol>
+
+</body>
+</html>

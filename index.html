@@ -1,0 +1,1441 @@
+<!DOCTYPE html>
+
+<html lang="zh-Hant">
+
+<head>
+    <meta charset="utf-8" />
+    <meta content="width=device-width, initial-scale=1" name="viewport" />
+    <title>AFS MyAgent Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="css/style.css" rel="stylesheet" />
+</head>
+
+<body>
+    <div class="boot-screen" id="bootScreen">
+        <div class="boot-card">
+            <div class="boot-spinner"></div>
+            <h2>Preparing Your Environment</h2>
+            <p>Your MyAgent workspace is waking up...</p>
+            <small>This usually takes a few seconds</small>
+        </div>
+    </div>
+    <div class="app-shell opacity-0" id="app">
+        <aside class="sidebar">
+            <div class="brand-row">
+                <button aria-label="Go to Agent home" class="brand-home" id="brandHomeBtn" type="button">
+                    <span class="brand-logo"><img src="images/icon_AFS_MyAgent.svg">
+                        <!-- <i data-lucide="bot"></i> -->
+                    </span>
+                    <strong>AFS MyAgent</strong>
+                </button>
+                <button aria-label="Collapse sidebar" class="icon-btn ms-auto sidebar-collapse-btn"
+                    id="sidebarCollapseBtn"><i data-lucide="panel-left-close"></i></button>
+            </div>
+            <div class="sidebar-scroll">
+                <button class="new-chat-btn" id="newChatBtn"><i data-lucide="square-plus"></i> New Chat</button>
+                <div class="section-label sessions-label">
+                    <span><i data-lucide="chevron-down"></i> <i data-lucide="message-square"></i> SESSIONS</span>
+                    <span><i data-lucide="search"></i> <span class="count">4</span></span>
+                </div>
+                <div class="session-list">
+                    <button class="session-item active" data-page="analysis">
+                        <span class="dot green"></span>
+                        <span class="session-copy"><b>資料分析結果呈現方式</b><small>just now</small></span>
+                    </button>
+                    <button class="session-item" data-page="cronGuide">
+                        <span class="dot"></span>
+                        <span class="session-copy"><b>排程任務使用指南</b><small>3m ago</small></span>
+                    </button>
+                    <button class="session-item" data-page="techHelp">
+                        <span class="dot"></span>
+                        <span class="session-copy"><b>如何解決技術問題</b><small>2d ago</small></span>
+                    </button>
+                    <button class="session-item" data-page="assistantIntro">
+                        <span class="dot"></span>
+                        <span class="session-copy"><b>AI 助手能力介紹</b><small>2d ago</small></span>
+                    </button>
+                </div>
+                <hr />
+                <button class="nav-item" data-page="usage"><i data-lucide="chart-column"></i> Usage</button>
+                <button class="nav-item config-toggle active-parent" id="configToggle"><i data-lucide="settings"></i>
+                    Config
+                    <i data-lucide="chevron-down" class="ms-auto"></i></button>
+                <div class="config-menu" id="configMenu">
+                    <button class="nav-sub" data-page="memory"><i data-lucide="brain"></i> Memory</button>
+                    <button class="nav-sub" data-page="skills"><i data-lucide="wand-sparkles"></i>
+                        Skills</button>
+                    <button class="nav-sub" data-page="environment"><i data-lucide="code"></i>
+                        Environment</button>
+                    <button class="nav-sub" data-page="channels"><i data-lucide="radio-tower"></i>
+                        Channels</button>
+                    <button class="nav-sub" data-page="integrations"><i data-lucide="plug"></i>
+                        Integrations</button>
+                    <button class="nav-sub" data-page="cron"><i data-lucide="clock-3"></i> Cron</button>
+                    <button class="nav-sub" data-page="models"><i data-lucide="cpu"></i> Models</button>
+                </div>
+            </div>
+            <div class="sidebar-footer">
+                <button class="credit" id="costHistoryBtn" type="button"><i data-lucide="wallet-cards"></i>
+                    $4.88</button>
+                <div class="footer-icons has-tour-button">
+                    <button aria-disabled="true" aria-label="Theme" class="footer-icon-btn demo-disabled"
+                        title="Demo disabled" type="button"><i data-lucide="moon"></i></button>
+                    <div class="footer-popover-wrap">
+                        <button aria-label="Language" class="footer-icon-btn footer-popover-toggle"
+                            data-footer-menu="language" type="button"><i data-lucide="globe"></i></button>
+                        <div class="footer-popover" data-footer-popover="language">
+                            <button data-lang="en">
+                                <span>English</span>
+                            </button>
+                            <button class="active" data-lang="zh-TW">
+                                <span>繁體中文</span>
+                                <i data-lucide="check"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="footer-popover-wrap">
+                        <button aria-label="Settings" class="footer-icon-btn footer-popover-toggle demo-disabled"
+                            data-footer-menu="settings" title="Demo disabled" type="button"><i data-lucide="settings"></i></button>
+                        <div class="footer-popover" data-footer-popover="settings">
+                            <button><span>Change Password</span></button>
+                            <button><span>About</span></button>
+                        </div>
+                    </div>
+                    <button aria-disabled="true" aria-label="Sign out" class="footer-icon-btn demo-disabled"
+                        title="Demo disabled" type="button"><i data-lucide="log-out"></i></button>
+                    <button aria-label="重新開啟產品導覽" class="footer-icon-btn" id="restartProductTour"
+                        title="產品導覽" type="button"><i data-lucide="circle-help"></i></button>
+                </div>
+            </div>
+        </aside>
+        <button aria-label="Expand sidebar" class="sidebar-expand-btn" id="sidebarExpandBtn"><i data-lucide="chevron-right"></i></button>
+        <main class="workspace">
+            <section class="page active" id="page-home">
+                <div class="empty-state">
+                    <div class="agent-logo">
+                        <!-- <i data-lucide="bot"></i> -->
+                         <img src="images/icon_MyAgent_128.svg">
+                    </div>
+                    <h1 data-i18n="home.title">Agent Assistant</h1>
+                    <p data-i18n="home.desc">Start a new session to begin with your AI agent.</p>
+                    <button class="btn btn-primary px-4" data-i18n="home.newSession" id="homeNewSessionBtn">+ New
+                        Session</button>
+                </div>
+            </section>
+            <section class="page" id="page-newsession">
+                <div class="chat-layout new-session-layout">
+                    <div class="chat-pane">
+                        <div class="chat-topbar">
+                            <h2>New Session</h2>
+                            <div class="meta-pills">
+                                <span>Platform/Claude Haiku 4.5 <i data-lucide="chevron-down" class="ms-1"></i></span>
+                                <div class="dropdown">
+                                    <button aria-label="Session menu" class="session-more" data-bs-toggle="dropdown"><i data-lucide="ellipsis-vertical"></i></button>
+                                    <ul class="dropdown-menu dropdown-menu-end session-menu">
+                                        <li><button class="dropdown-item"><i data-lucide="pencil"></i>
+                                                Rename</button></li>
+                                        <li><button class="dropdown-item"><i data-lucide="git-branch"></i>
+                                                Fork</button></li>
+                                        <li><button class="dropdown-item"><i data-lucide="refresh-cw"></i>
+                                                Reload</button></li>
+                                        <li><button class="dropdown-item"><i data-lucide="zap"></i> Auto Compact
+                                                <i data-lucide="check" class="ms-auto"></i></button></li>
+                                        <li><button class="dropdown-item"><i data-lucide="circle-minus"></i>
+                                                Compact</button></li>
+                                        <li><button class="dropdown-item"><i data-lucide="download"></i>
+                                                Export</button></li>
+                                        <li><button class="dropdown-item"><i data-lucide="share-2"></i>
+                                                Share</button></li>
+                                        <li>
+                                            <hr class="dropdown-divider" />
+                                        </li>
+                                        <li><button class="dropdown-item text-danger"><i data-lucide="trash-2"></i>
+                                                Delete</button></li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="chat-scroll new-session-chat" id="newSessionChat">
+                            <div class="new-session-empty" id="newSessionEmpty">Send a message to start the
+                                conversation.</div>
+                        </div>
+                        <div class="chat-input-wrap">
+                            <i data-lucide="image"></i>
+                            <input id="newSessionInput" placeholder="Type a message..." type="text" />
+                            <button class="send-circle" disabled="" id="newSessionSend"><i data-lucide="send"></i></button>
+                        </div>
+                    </div>
+                    <div class="canvas-pane new-session-files">
+                        <div aria-label="拖曳調整右側欄寬度" aria-orientation="vertical" aria-valuemax="1200" aria-valuemin="320"
+                            class="canvas-resize-handle" role="separator" tabindex="0"><span>Drag to resize</span></div>
+                        <div class="canvas-tabs">
+                            <button><i data-lucide="chevron-right"></i></button>
+                            <button class="active"><i data-lucide="folder"></i> Files</button>
+                            <button>+</button>
+                        </div>
+                        <div class="files-browser">
+                            <div class="files-toolbar"><strong>workspace</strong><span><i data-lucide="refresh-cw"></i>
+                                    Refresh</span><i data-lucide="ellipsis-vertical"></i></div>
+                            <div class="file-row"><i data-lucide="folder"></i>
+                                <div><strong>memory</strong><small>⭐ Directory   Jul 10, 11:38 AM</small></div>
+                            </div>
+                            <div class="file-row"><i data-lucide="folder"></i>
+                                <div><strong>skills</strong><small>⭐ Directory   Jul 10, 11:38 AM</small></div>
+                            </div>
+                            <div class="file-row"><i data-lucide="folder"></i>
+                                <div><strong>channel-files</strong><small>Directory   Jul 10, 11:38 AM</small></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="page demo-chat-page" id="page-techHelp">
+                <div class="chat-layout session-chat-layout">
+                    <div class="chat-pane">
+                        <div class="chat-topbar">
+                            <h2>技術問題解決方法和流程</h2>
+                            <div class="meta-pills">
+                                <span>Platform/Claude Haiku 4.5</span>
+                                <span><i data-lucide="message-square"></i> 10.4k / 200.0k</span>
+                                <span><i data-lucide="chart-no-axes-column"></i> 19.8k ~$0.019</span>
+                                <i data-lucide="ellipsis-vertical"></i>
+                            </div>
+                        </div>
+                        <div class="chat-scroll demo-conversation-scroll">
+                            <div class="user-bubble">要怎麼請你解決技術問題</div>
+                            <div class="thought-line">› 思考過程</div>
+                            <div class="topic">Topic: 技術問題解決方法和流程</div>
+                            <div class="assistant-card rich-answer">
+                                <p>很好問題！以下是我能幫你解決技術問題的方式和最佳實踐：</p>
+                                <h3>📋 如何有效提出技術問題</h3>
+                                <h4>1. 清楚描述問題</h4>
+                                <ul>
+                                    <li>你遇到的<strong>具體現象</strong>（錯誤信息、奇怪行為等）</li>
+                                    <li><strong>預期結果</strong>是什麼</li>
+                                    <li><strong>環境信息</strong>（操作系統、編程語言版本、依賴版本等）</li>
+                                </ul>
+                                <p><strong>好例子：</strong></p>
+                                <div class="code-demo">
+                                    <div class="code-demo-head">CODE <span>⧉ Copy</span></div>
+                                    <pre>Python 3.11 中，使用 FastAPI + SQLite，
+當執行 POST /users 時，返回 422 錯誤：
+"validation error for UserSchema: email field required (type=value_error.missing)"
+但我已經在 request body 中傳入 email 了。</pre>
+                                </div>
+                                <h4>2. 提供相關代碼或配置</h4>
+                                <ul>
+                                    <li>最小化的重現代碼片段（只包含問題部分）</li>
+                                    <li>相關的配置文件</li>
+                                    <li>完整的錯誤堆棧跟蹤（traceback）</li>
+                                </ul>
+                                <h4>3. 說明已嘗試過的方案</h4>
+                                <ul>
+                                    <li>哪些解決方法試過了但失敗</li>
+                                    <li>搜尋過哪些資源</li>
+                                    <li>幫助我快速定位問題根源</li>
+                                </ul>
+                                <hr />
+                                <h3>🛠️ 我能提供的技術支持</h3>
+                                <table class="answer-table">
+                                    <thead>
+                                        <tr>
+                                            <th>類別</th>
+                                            <th>示例</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>編程語言</th>
+                                            <td>Python、JavaScript/TypeScript、Bash、Go 等</td>
+                                        </tr>
+                                        <tr>
+                                            <th>框架與工具</th>
+                                            <td>FastAPI、Django、Express、Hono、React、Bun 等</td>
+                                        </tr>
+                                        <tr>
+                                            <th>DevOps</th>
+                                            <td>Docker、Kubernetes、CI/CD、環境配置</td>
+                                        </tr>
+                                        <tr>
+                                            <th>數據庫</th>
+                                            <td>SQL、SQLite、Postgres、數據模型設計</td>
+                                        </tr>
+                                        <tr>
+                                            <th>系統/網絡</th>
+                                            <td>DNS、TCP/IP、日誌分析、性能調優</td>
+                                        </tr>
+                                        <tr>
+                                            <th>文件操作</th>
+                                            <td>讀寫文件、數據轉換、格式處理</td>
+                                        </tr>
+                                        <tr>
+                                            <th>自動化</th>
+                                            <td>腳本開發、流程自動化、計劃任務</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <hr />
+                                <h3>🚀 我的工作方式</h3>
+                                <ol>
+                                    <li><strong>分析問題</strong> → 理解根本原因而非表面症狀</li>
+                                    <li><strong>提供方案</strong> → 通常給出多個選項，說明優缺點</li>
+                                    <li><strong>實現代碼</strong> → 直接幫你寫/修改代碼文件</li>
+                                    <li><strong>測試驗證</strong> → 在本地環境執行驗證方案是否有效</li>
+                                    <li><strong>文檔記錄</strong> → 將解決方案和經驗保存到 Knowledge，便於未來參考</li>
+                                </ol>
+                                <hr />
+                                <h3>💡 特殊功能</h3>
+                                <ul>
+                                    <li><strong>讀寫文件：</strong>檢查和修改你的代碼</li>
+                                    <li><strong>執行命令：</strong>直接運行測試、安裝依賴、調試</li>
+                                    <li><strong>網絡搜索：</strong>查找文檔、解決方案、最佳實踐</li>
+                                    <li><strong>記憶系統：</strong>記住你的項目細節和解決過的問題</li>
+                                    <li><strong>子任務代理：</strong>複雜問題可以分解成多個並行任務</li>
+                                </ul>
+                                <hr />
+                                <h3>📝 立即開始</h3>
+                                <p>只需告訴我：</p>
+                                <ul>
+                                    <li>❌ <strong>你遇到的問題是什麼</strong></li>
+                                    <li>🔧 <strong>相關的代碼或配置</strong></li>
+                                    <li>🔍 <strong>你已經嘗試過什麼</strong></li>
+                                    <li>🎯 <strong>你想達到的目標</strong></li>
+                                </ul>
+                                <p><strong>例如：</strong></p>
+                                <blockquote>「我的 Bun + Hono API 在連接 SQLite 時出現超時錯誤，試過調整 timeout 設置但沒用……」</blockquote>
+                                <p>我就會立即開始診斷和幫助！ 🎯</p>
+                            </div>
+                        </div>
+                        <div class="chat-input-wrap"><i data-lucide="image"></i><input
+                                placeholder="Type a message..." type="text" /><button class="send-circle" disabled=""><i data-lucide="send"></i></button></div>
+                    </div>
+                    <div class="canvas-pane session-files-pane">
+                        <div aria-label="拖曳調整右側欄寬度" aria-orientation="vertical" aria-valuemax="1200" aria-valuemin="320"
+                            class="canvas-resize-handle" role="separator" tabindex="0"><span>Drag to resize</span></div>
+                        <div class="canvas-tabs">
+                            <button><i data-lucide="chevron-right"></i></button>
+                            <button class="active"><i data-lucide="folder"></i> Files</button>
+                            <button>+</button>
+                        </div>
+                        <div class="files-browser">
+                            <div class="files-toolbar"><strong>workspace</strong><span><i data-lucide="refresh-cw"></i> Refresh</span><i data-lucide="ellipsis-vertical"></i></div>
+                            <div class="file-row"><i data-lucide="folder"></i>
+                                <div><strong>memory</strong><small>⭐ Directory   Jul 10, 11:38 AM</small></div>
+                            </div>
+                            <div class="file-row"><i data-lucide="folder"></i>
+                                <div><strong>skills</strong><small>⭐ Directory   Jul 10, 11:38 AM</small></div>
+                            </div>
+                            <div class="file-row"><i data-lucide="folder"></i>
+                                <div><strong>channel-files</strong><small>Directory   Jul 10, 11:38 AM</small></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="page demo-chat-page" id="page-assistantIntro">
+                <div class="chat-layout session-chat-layout">
+                    <div class="chat-pane">
+                        <div class="chat-topbar">
+                            <h2>AI助手能力介紹</h2>
+                            <div class="meta-pills">
+                                <span>Platform/Claude Haiku 4.5</span>
+                                <span><i data-lucide="message-square"></i> 10.6k / 200.0k</span>
+                                <span><i data-lucide="chart-no-axes-column"></i> 20.0k ~$0.010</span>
+                                <i data-lucide="ellipsis-vertical"></i>
+                            </div>
+                        </div>
+                        <div class="chat-scroll demo-conversation-scroll">
+                            <div class="user-bubble">你是誰，可以處理什麼</div>
+                            <div class="thought-line">› Thought:</div>
+                            <div class="topic">Topic: AI助手能力介紹</div>
+                            <div class="assistant-card rich-answer">
+                                <p><strong>你好！我是 Dream AI 助手</strong></p>
+                                <p>我是一個多功能的 AI 助手，內建於 MyAgent 平台。以下是我的核心能力：</p>
+                                <h3>🎯 主要功能</h3>
+                                <h4>📁 文件操作</h4>
+                                <ul>
+                                    <li><strong>讀寫文件：</strong>創建、編輯、刪除任何文本文件</li>
+                                    <li><strong>程式碼編輯：</strong>支援所有編程語言</li>
+                                    <li><strong>搜尋檔案：</strong>用正則表達式快速查找內容</li>
+                                    <li><strong>批量編輯：</strong>同時修改多個檔案</li>
+                                </ul>
+                                <h4>💻 執行命令</h4>
+                                <ul>
+                                    <li><strong>Bash 命令：</strong>執行系統命令和腳本</li>
+                                    <li><strong>Bun 運行環境：</strong>原生支援 TypeScript/JavaScript</li>
+                                    <li><strong>Python 執行：</strong>執行 Python 腳本和 pip 套件安裝</li>
+                                    <li><strong>開發工作流：</strong>編譯、測試、部署等</li>
+                                </ul>
+                                <h4>🌐 網路能力</h4>
+                                <ul>
+                                    <li><strong>網頁抓取：</strong>從 URL 提取內容（Markdown/HTML 格式）</li>
+                                    <li><strong>Web 搜尋：</strong>跨 29+ 來源搜尋資訊</li>
+                                </ul>
+                                <h4>📊 資料處理與可視化</h4>
+                                <ul>
+                                    <li><strong>Excel/CSV：</strong>創建、編輯、分析電子表格</li>
+                                    <li><strong>PDF：</strong>提取文本、生成 PDF、填表</li>
+                                    <li><strong>Canvas 面板：</strong>繪製圖表、表格、儀表板、圖表</li>
+                                </ul>
+                                <h4>📝 文檔與演示</h4>
+                                <ul>
+                                    <li><strong>Word 文檔 (.docx)：</strong>創建、編輯、追蹤變更</li>
+                                    <li><strong>PowerPoint 演示 (.pptx)：</strong>創建、修改、分析簡報</li>
+                                    <li><strong>繪圖：</strong>用 Draw.io 創建架構圖、流程圖、ER 圖等</li>
+                                </ul>
+                                <h4>🤖 自動化</h4>
+                                <ul>
+                                    <li><strong>工作排程：</strong>使用 Cron 表達式定時執行任務</li>
+                                    <li><strong>子代理：</strong>委派複雜任務給專業子代理</li>
+                                    <li><strong>瀏覽器自動化：</strong>填表、點擊按鈕、截圖、數據提取</li>
+                                </ul>
+                                <h4>📚 記憶與知識管理</h4>
+                                <ul>
+                                    <li><strong>持久記憶：</strong>跨會話保存學習內容</li>
+                                    <li><strong>知識庫：</strong>存儲決策、課程、項目信息</li>
+                                    <li><strong>會話歷史：</strong>搜尋過去的對話和工作成果</li>
+                                </ul>
+                                <h4>💬 外部通訊</h4>
+                                <ul>
+                                    <li><strong>Slack/Discord/Telegram/LINE：</strong>發送消息到外部頻道</li>
+                                    <li><strong>定時通知：</strong>設置提醒和定期報告</li>
+                                </ul>
+                                <h3>🛠️ 特殊技能（按需加載）</h3>
+                                <table class="answer-table">
+                                    <thead>
+                                        <tr>
+                                            <th>技能名稱</th>
+                                            <th>用途</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <th>pptx</th>
+                                            <td>PowerPoint 簡報製作與編輯</td>
+                                        </tr>
+                                        <tr>
+                                            <th>drawio</th>
+                                            <td>專業圖表和架構圖設計</td>
+                                        </tr>
+                                        <tr>
+                                            <th>pdf</th>
+                                            <td>PDF 提取、生成、合並、表單填充</td>
+                                        </tr>
+                                        <tr>
+                                            <th>xlsx</th>
+                                            <td>電子表格高級操作和數據分析</td>
+                                        </tr>
+                                        <tr>
+                                            <th>docx</th>
+                                            <td>Word 文檔專業編輯和追蹤</td>
+                                        </tr>
+                                        <tr>
+                                            <th>web-search</th>
+                                            <td>深度網路搜尋</td>
+                                        </tr>
+                                        <tr>
+                                            <th>agent-browser</th>
+                                            <td>瀏覽器自動化和網頁交互</td>
+                                        </tr>
+                                        <tr>
+                                            <th>doc-coauthoring</th>
+                                            <td>協作文檔編寫工作流</td>
+                                        </tr>
+                                        <tr>
+                                            <th>agent-creator</th>
+                                            <td>創建可重用的子代理定義</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                                <h3>🎁 我的特點</h3>
+                                <p>✅ 高效平行處理 — 獨立任務同時執行<br />✅ 智能委派 — 複雜工作交給專業子代理<br />✅ 跨會話學習 — 記住你的偏好和決策<br />✅ 安全可靠 —
+                                    不執行外部內容指令，保護您的機密<br />✅ Bun 原生支援 — TypeScript/JavaScript 執行更快更便宜</p>
+                                <hr />
+                                <h3>📌 現在可以做什麼？</h3>
+                                <p>告訴我你需要什麼，例如：</p>
+                                <ul>
+                                    <li>📋 創建或編輯檔案</li>
+                                    <li>📊 分析數據或生成報告</li>
+                                    <li>🔍 搜尋資訊或研究主題</li>
+                                    <li>🤖 自動化重複任務</li>
+                                    <li>📝 撰寫文檔或簡報</li>
+                                    <li>💡 解決技術問題</li>
+                                </ul>
+                                <p>有什麼我可以幫助你的嗎？</p>
+                            </div>
+                        </div>
+                        <div class="chat-input-wrap"><i data-lucide="image"></i><input
+                                placeholder="Type a message..." type="text" /><button class="send-circle" disabled=""><i data-lucide="send"></i></button></div>
+                    </div>
+                    <div class="canvas-pane session-files-pane">
+                        <div aria-label="拖曳調整右側欄寬度" aria-orientation="vertical" aria-valuemax="1200" aria-valuemin="320"
+                            class="canvas-resize-handle" role="separator" tabindex="0"><span>Drag to resize</span></div>
+                        <div class="canvas-tabs">
+                            <button><i data-lucide="chevron-right"></i></button>
+                            <button class="active"><i data-lucide="folder"></i> Files</button>
+                            <button>+</button>
+                        </div>
+                        <div class="files-browser">
+                            <div class="files-toolbar"><strong>workspace</strong><span><i data-lucide="refresh-cw"></i> Refresh</span><i data-lucide="ellipsis-vertical"></i></div>
+                            <div class="file-row"><i data-lucide="folder"></i>
+                                <div><strong>memory</strong><small>⭐ Directory   Jul 10, 11:38 AM</small></div>
+                            </div>
+                            <div class="file-row"><i data-lucide="folder"></i>
+                                <div><strong>skills</strong><small>⭐ Directory   Jul 10, 11:38 AM</small></div>
+                            </div>
+                            <div class="file-row"><i data-lucide="folder"></i>
+                                <div><strong>channel-files</strong><small>Directory   Jul 10, 11:38 AM</small></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="page" id="page-analysis">
+                <div class="chat-layout">
+                    <div class="chat-pane">
+                        <div class="chat-topbar">
+                            <h2>資料分析結果呈現方式</h2>
+                            <div class="meta-pills">
+                                <span>Platform/Claude Haiku 4.5</span><span><i data-lucide="message-square"></i> 10.2k
+                                    /
+                                    200.0k</span><span><i data-lucide="chart-no-axes-column"></i> 10.2k ~$0.0036</span><i data-lucide="ellipsis-vertical"></i>
+                            </div>
+                        </div>
+                        <div class="chat-scroll" id="analysisChat">
+                            <div class="user-bubble">my agent 資料分析完成後實際長什麼樣<br /><br />例如：<br /><br />上傳
+                                CSV？<br />表格？<br />統計摘要？<br />圖表是在聊天內還是
+                                Preview</div>
+                            <div class="topic">Topic: 資料分析結果呈現方式</div>
+                            <div class="tool-chip clickable-tool" id="skillToolChip" role="button" tabindex="0">
+                                <span>🧑‍🏭 Skill:
+                                    canvas</span><b class="text-success">Completed →</b>
+                            </div>
+                            <div class="assistant-card" data-typewriter="好問題！讓我為你創建一個實際的資料分析結果示例，展示各種呈現方式："
+                                id="aiIntro"></div>
+                            <div class="tool-chip clickable-tool d-none" id="canvasToolChip" role="button" tabindex="0">
+                                <span>🎨
+                                    Canvas: 資料分析結果示例</span><b class="text-primary" id="canvasToolStatus">Running...
+                                    →</b>
+                            </div>
+                            <div class="generating d-none" id="generating"><span class="typing-dot"></span><span
+                                    class="typing-dot"></span><span class="typing-dot"></span> Generating...</div>
+                            <div class="analysis-summary d-none" id="analysisSummary">
+                                <h3>📊 Agent 資料分析結果的樣子</h3>
+                                <p data-typewriter="已完成 10,000 筆銷售紀錄分析，並建立 KPI、趨勢圖、品類比較、客群分布與 Top 10 商品表格。"
+                                    id="summaryTyped"></p>
+                                <div class="summary-grid">
+                                    <span>✅ KPI 指標</span><span>✅ 趨勢圖</span><span>✅ 排名表格</span><span>✅ 客群分析</span>
+                                </div>
+                                <button class="btn btn-sm btn-outline-primary mt-3" data-page="cron">建立每日排程</button>
+                            </div>
+                        </div>
+                        <div class="chat-input-wrap">
+                            <i data-lucide="image"></i>
+                            <input id="analysisInput" placeholder="Type a message..." type="text" />
+                            <button class="send-circle" disabled="" id="analysisSend"><i data-lucide="arrow-up"></i></button>
+                        </div>
+                    </div>
+                    <div class="canvas-pane analysis-side-pane">
+                        <div aria-label="拖曳調整 Canvas 寬度" aria-orientation="vertical" aria-valuemax="1200"
+                            aria-valuemin="360" class="canvas-resize-handle" id="canvasResizeHandle" role="separator"
+                            tabindex="0">
+                            <span>Drag to resize</span>
+                        </div>
+                        <div class="canvas-tabs" id="analysisSideTabs">
+                            <button><i data-lucide="chevron-right"></i></button>
+                            <button data-side-view="files"><i data-lucide="folder"></i> Files</button>
+                            <button class="active" data-side-view="canvas"><i data-lucide="panel-top"></i>
+                                Canvas</button>
+                            <button data-side-view="tool"><i data-lucide="terminal"></i> Tool Output</button>
+                            <button>+</button>
+                        </div>
+                        <div class="side-view" id="side-files">
+                            <div class="files-browser embedded-files">
+                                <div class="files-toolbar"><strong>workspace</strong><span><i data-lucide="refresh-cw"></i>
+                                        Refresh</span><i data-lucide="ellipsis-vertical"></i></div>
+                                <div class="file-row"><i data-lucide="folder"></i>
+                                    <div><strong>memory</strong><small>⭐ Directory   Jul 10, 11:38 AM</small></div>
+                                </div>
+                                <div class="file-row"><i data-lucide="folder"></i>
+                                    <div><strong>skills</strong><small>⭐ Directory   Jul 10, 11:38 AM</small></div>
+                                </div>
+                                <div class="file-row"><i data-lucide="folder"></i>
+                                    <div><strong>channel-files</strong><small>Directory   Jul 10, 11:38 AM</small></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="side-view active" id="side-canvas">
+                            <div class="canvas-header">
+                                <strong>資料分析結果示例</strong>
+                                <small>blocks</small>
+                                <span id="streamingLabel">Streaming... 41 chars</span>
+                                <div aria-label="資料分析結果操作" class="canvas-actions d-none" id="canvasActions">
+                                    <button aria-label="展開資料分析結果" class="canvas-action-btn"
+                                        data-bs-target="#analysisResultModal" data-bs-toggle="modal" title="展開"
+                                        type="button">
+                                        <i data-lucide="expand"></i>
+                                    </button>
+                                    <button aria-label="下載資料分析結果示例 HTML" class="canvas-action-btn"
+                                        id="downloadAnalysisReport" title="下載 HTML" type="button">
+                                        <i data-lucide="download"></i>
+                                    </button>
+                                    <a aria-label="在新分頁開啟分享頁面" class="canvas-action-btn" href="資料分析結果示例-shared.html"
+                                        rel="noopener" target="_blank" title="分享">
+                                        <i data-lucide="share-2"></i>
+                                    </a>
+                                </div>
+                            </div>
+                            <div class="canvas-thinking" id="canvasThinking">
+                                <div class="mini-spinner"></div>
+                                <p>Thinking...</p>
+                            </div>
+                            <div class="dashboard d-none" id="dashboard">
+                                <div class="dash-title">
+                                    <h3>資料分析完成報告</h3>
+                                    <span>已分析 10,000 筆銷售紀錄 · 2024/01 - 2024/12</span>
+                                </div>
+                                <div class="kpi-grid">
+                                    <div class="kpi"><b>$2.4M</b><span>總銷售額</span><em>+18%</em></div>
+                                    <div class="kpi"><b>$245</b><span>平均訂單</span><em>+5%</em></div>
+                                    <div class="kpi"><b>3,847</b><span>客戶數</span><em class="negative">-2%</em></div>
+                                    <div class="kpi"><b>3.2%</b><span>轉換率</span><em>+0.4%</em></div>
+                                </div>
+                                <div class="chart-grid">
+                                    <div class="chart-card">
+                                        <div class="chart-title">月銷售額 (K)</div><svg id="lineChart"
+                                            preserveaspectratio="none" viewbox="0 0 500 220"></svg>
+                                    </div>
+                                    <div class="chart-card">
+                                        <div class="chart-title">銷售品類分布</div>
+                                        <div class="bar-chart" id="barChart"></div>
+                                    </div>
+                                </div>
+                                <h4>銷售排名前 10 的商品</h4>
+                                <div class="table-responsive">
+                                    <table class="table table-sm sales-table">
+                                        <thead>
+                                            <tr>
+                                                <th>排名</th>
+                                                <th>商品名稱</th>
+                                                <th>銷售件數</th>
+                                                <th>銷售額</th>
+                                                <th>同比增長</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="salesRows"></tbody>
+                                    </table>
+                                </div>
+                                <h4>客戶分析</h4>
+                                <div class="chart-grid bottom">
+                                    <div class="chart-card pie-wrap">
+                                        <div class="pie-chart"></div>
+                                        <div class="legend"><span>● 新客戶 34%</span><span>● 回購客 49%</span><span>● VIP
+                                                17%</span></div>
+                                    </div>
+                                    <div class="chart-card">
+                                        <div class="chart-title">客戶年齡分布</div>
+                                        <div class="age-bars"><span style="height:32%">18-25</span><span
+                                                style="height:64%">26-35</span><span
+                                                style="height:92%">36-45</span><span
+                                                style="height:74%">46-55</span><span style="height:34%">55+</span></div>
+                                    </div>
+                                </div>
+                                <div class="insights">
+                                    <h4>關鍵發現</h4>
+                                    <ol>
+                                        <li>電子產品與居家用品是主要營收來源。</li>
+                                        <li>7 月銷售額達全年高點，9 月短暫回落後回升。</li>
+                                        <li>36–45 歲客群貢獻最高，可作為後續推播重點。</li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="side-view" id="side-tool">
+                            <div class="tool-output-head">
+                                <div><small>SKILL</small><strong><i data-lucide="book-open"></i> canvas</strong>
+                                </div>
+                                <span>Loaded</span>
+                            </div>
+                            <div class="tool-output-body">
+                                <p class="skill-path">Skill base directory: /app/resources/skills/canvas</p>
+                                <h3>Canvas Skill</h3>
+                                <p>The <code>canvas_editor</code> tool manages the canvas panel with 6 operations.</p>
+                                <h2>Operations Quick Reference</h2>
+                                <div class="table-responsive">
+                                    <table class="table tool-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Operation</th>
+                                                <th>Purpose</th>
+                                                <th>Required Params</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><code>create</code></td>
+                                                <td>Full canvas (first time or full redesign)</td>
+                                                <td><code>title</code> + <code>blocks</code> or <code>html</code> +
+                                                    <code>libs</code>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td><code>update_block</code></td>
+                                                <td>Replace a block by index</td>
+                                                <td><code>index</code>, <code>block</code></td>
+                                            </tr>
+                                            <tr>
+                                                <td><code>insert_block</code></td>
+                                                <td>Add a new block at position</td>
+                                                <td><code>index</code>, <code>block</code></td>
+                                            </tr>
+                                            <tr>
+                                                <td><code>remove_block</code></td>
+                                                <td>Delete a block by index</td>
+                                                <td><code>index</code></td>
+                                            </tr>
+                                            <tr>
+                                                <td><code>patch_html</code></td>
+                                                <td>Find-and-replace in HTML content</td>
+                                                <td><code>old_string</code>, <code>new_string</code></td>
+                                            </tr>
+                                            <tr>
+                                                <td><code>view</code></td>
+                                                <td>Read current canvas state</td>
+                                                <td><em>(none)</em></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="page" id="page-cronGuide">
+                <div class="simple-chat-page">
+                    <div class="simple-header">
+                        <h2>排程任務使用指南</h2>
+                    </div>
+                    <div class="guide-card">
+                        <h3>UI 上的排程位置</h3>
+                        <p><b>方式 1：通過側邊欄設定</b></p>
+                        <ol>
+                            <li>打開左側邊欄 → Config</li>
+                            <li>點擊 Cron</li>
+                            <li>查看排程列表或新增 Job</li>
+                        </ol>
+                        <p><b>方式 2：直接要求 Agent 設置</b></p>
+                        <div class="sample-prompt">「幫我設置每天下午 5 點的日報提醒」</div>
+                        <button class="btn btn-primary" data-page="cron">前往 Cron Jobs</button>
+                    </div>
+                </div>
+            </section>
+            <section class="page" id="page-cron">
+                <div class="page-header">
+                    <div>
+                        <h2 data-i18n="cron.title"><i data-lucide="clock-3" class="text-primary"></i> Cron Jobs</h2>
+                    </div>
+                    <button class="btn btn-primary" data-i18n="cron.add" id="addJobBtn">+ Add Job</button>
+                </div>
+                <div class="tabs" id="cronTabs"><button class="active" data-cron-tab="jobs"
+                        data-i18n="cron.jobs">Jobs</button><button data-cron-tab="triggered"
+                        data-i18n="cron.triggered">Triggered
+                        Sessions</button></div>
+                <div class="content-area cron-content">
+                    <div id="cronJobsPane">
+                        <div class="cron-form d-none" id="cronForm">
+                            <h4>New Cron Job</h4>
+                            <label>Name</label><input class="form-control" id="jobName" placeholder="e.g. Daily report"
+                                value="每日銷售分析報表" />
+                            <label>Message (agent prompt)</label><textarea class="form-control" id="jobMessage"
+                                placeholder="e.g. Check GitHub stars and report"
+                                rows="4">分析今日銷售資料，建立 KPI 與圖表摘要，並整理關鍵發現。</textarea>
+                            <label>Schedule Type</label>
+                            <div class="segmented" id="scheduleType"><button
+                                    class="active">Interval</button><button>Cron
+                                    Expression</button><button>One-Time</button></div>
+                            <label>Interval (seconds)</label><input class="form-control" id="jobInterval"
+                                value="86400" />
+                            <label>Timeout (minutes, default 10)</label><input class="form-control"
+                                placeholder="e.g. 10" />
+                            <label>Model (optional)</label><select class="form-select">
+                                <option>Default model</option>
+                                <option>Claude Haiku 4.5</option>
+                                <option>Claude Sonnet 4.6</option>
+                            </select>
+                            <label class="deliver-row"><input id="deliverChannel" type="checkbox" /> Deliver result to
+                                channel</label>
+                            <div class="d-none" id="channelSelectWrap"><label>Channel</label><select class="form-select"
+                                    id="deliverChannelSelect">
+                                    <option>LINE</option>
+                                    <option>Telegram</option>
+                                </select></div>
+                            <div class="form-actions"><button class="btn btn-light"
+                                    id="cancelJob">Cancel</button><button class="btn btn-primary" id="createJob">Create
+                                    Job</button></div>
+                        </div>
+                        <div class="job-list" id="jobList">
+                            <div class="job-row"><span class="dot"></span>
+                                <div class="job-info"><strong>Dream <small>Recurring · every 1d</small>
+                                        <em>Built-in</em></strong><span>Background memory consolidation</span></div>
+                                <div class="job-actions"><label class="switch"><input
+                                            type="checkbox" /><span></span></label><small>Next:
+                                        N/A</small><i data-lucide="play"></i><i data-lucide="list"></i><i data-lucide="chevron-right"></i></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="d-none" id="cronTriggeredPane">
+                        <div class="trigger-toolbar">
+                            <div class="trigger-filters">
+                                <div class="cron-filter" data-filter="job">
+                                    <button class="cron-filter-btn" type="button"><span
+                                            class="cron-filter-label">Dream</span><i data-lucide="chevron-down"></i></button>
+                                    <div class="cron-filter-menu">
+                                        <button data-value="All Jobs" type="button">All Jobs</button>
+                                        <button class="selected" data-value="Dream" type="button"><i data-lucide="check"></i>Dream</button>
+                                    </div>
+                                </div>
+                                <div class="cron-filter" data-filter="status">
+                                    <button class="cron-filter-btn" type="button"><span class="cron-filter-label">All
+                                            Status</span><i data-lucide="chevron-down"></i></button>
+                                    <div class="cron-filter-menu">
+                                        <button class="selected" data-value="All Status" type="button"><i data-lucide="check"></i>All
+                                            Status</button>
+                                        <button data-value="Completed" type="button">Completed</button>
+                                        <button data-value="Error" type="button">Error</button>
+                                        <button data-value="Running" type="button">Running</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div aria-label="Triggered sessions range" class="trigger-range">
+                                <button class="active" type="button">7 d</button><button type="button">30
+                                    d</button><button type="button">All</button>
+                            </div>
+                        </div>
+                        <div class="trigger-summary">Total: <strong>1</strong><span><i data-lucide="circle-check"></i> 1
+                                passed</span></div>
+                        <div class="trigger-day-head"><strong>TODAY</strong><span>1 run</span></div>
+                        <div class="trigger-session-row" data-job="Dream" data-status="Completed">
+                            <i data-lucide="circle-check" class="trigger-ok"></i>
+                            <div class="trigger-session-copy"><strong>Dream</strong><span>Dream complete: memory=true,
+                                    knowledge=true</span></div>
+                            <div class="trigger-session-meta"><span>5s</span><span>下午4:18</span><i data-lucide="chevron-right"></i></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="page" id="page-channels">
+                <div class="page-header channels-head">
+                    <div>
+                        <h2 data-i18n="channels.title"><i data-lucide="radio-tower" class="text-primary"></i> Channels
+                        </h2>
+                        <p data-i18n="channels.desc">Connect your agent to chat platforms. You can create multiple
+                            instances of each
+                            type.</p>
+                    </div>
+                    <div class="dropdown">
+                        <button class="btn btn-primary dropdown-toggle" data-bs-toggle="dropdown"
+                            data-i18n="channels.add">+ Add
+                            Channel</button>
+                        <ul class="dropdown-menu dropdown-menu-end channel-add-menu">
+                            <li><button class="dropdown-item add-channel" data-channel="slack"><i data-lucide="messages-square"></i>
+                                    Slack</button></li>
+                            <li><button class="dropdown-item add-channel" data-channel="telegram"><i data-lucide="message-circle"></i> Telegram</button></li>
+                            <li><button class="dropdown-item add-channel" data-channel="discord"><i data-lucide="message-circle"></i>
+                                    Discord</button></li>
+                            <li><button class="dropdown-item add-channel" data-channel="line"><i data-lucide="message-circle"></i>
+                                    LINE</button></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="content-area channel-content">
+                    <div class="channel-card" data-channel-card="line">
+                        <div class="channel-summary" data-expand="line">
+                            <div class="channel-icon line">◯</div>
+                            <div class="channel-text"><strong>LINE <span>LINE</span> <small
+                                        id="lineState">Disabled</small></strong>
+                                <p>Connect via LINE Messaging API webhooks. Create a channel at developers.line.biz.</p>
+                            </div>
+                            <div class="channel-tools"><label class="switch"><input id="lineToggle"
+                                        type="checkbox" /><span></span></label><i data-lucide="trash-2" class="delete-channel" data-channel="LINE"
+                                    title="Delete channel"></i></div>
+                        </div>
+                        <div class="channel-detail d-none" id="lineDetail">
+                            <label>Name</label>
+                            <div class="with-icon"><input class="form-control" value="LINE" /><i data-lucide="pencil"></i></div>
+                            <label>Channel Access Token</label>
+                            <div class="with-icon"><input class="form-control" id="lineToken"
+                                    placeholder="Long-lived channel access token" type="password" /><i data-lucide="eye" class="toggle-secret" data-target="lineToken"></i></div>
+                            <label>Channel Secret</label>
+                            <div class="with-icon"><input class="form-control" id="lineSecret"
+                                    placeholder="Channel secret for signature validation" type="password" /><i data-lucide="eye" class="toggle-secret" data-target="lineSecret"></i></div>
+                            <label>Allow From (comma-separated LINE user IDs, or * for all)</label><input
+                                class="form-control" value="*" />
+                            <div class="webhook-box"><label>Webhook URL</label>
+                                <div class="copy-row"><code
+                                        id="webhookText">https://myagent-platform.demo/webhook/line/5c4763b86b8e431a</code><button
+                                        class="btn btn-light" id="copyWebhook"><i data-lucide="copy"></i>
+                                        Copy</button></div>
+                                <small>If you are using a tunnel, make sure the domain above matches your public
+                                    URL.</small>
+                            </div>
+                            <div class="setup-reminder"><strong>⚠ Setup Reminder</strong><br />1. Copy the Webhook URL
+                                above and paste
+                                it in LINE Developers Console → Messaging API → Webhook URL.<br />2. In LINE Official
+                                Account Manager,
+                                disable Greeting messages and Auto-reply messages.</div>
+                            <div class="channel-detail-actions"><button class="btn btn-light test-connection"
+                                    data-channel="LINE"><i data-lucide="plug"></i> Test Connection</button><button
+                                    class="btn btn-primary save-channel" data-channel="LINE"><i data-lucide="save"></i> Save</button></div>
+                        </div>
+                    </div>
+                    <div class="channel-card" data-channel-card="slack">
+                        <div class="channel-summary" data-expand="slack">
+                            <div class="channel-icon slack"><i data-lucide="hash"></i></div>
+                            <div class="channel-text"><strong>Slack <span>Slack</span> <small
+                                        id="slackState">Disabled</small></strong>
+                                <p>Connect via Slack Socket Mode. Requires a bot token and app token from api.slack.com.
+                                </p>
+                            </div>
+                            <div class="channel-tools"><label class="switch"><input id="slackToggle"
+                                        type="checkbox" /><span></span></label><i data-lucide="trash-2" class="delete-channel" data-channel="Slack"
+                                    title="Delete channel"></i></div>
+                        </div>
+                        <div class="channel-detail d-none" id="slackDetail">
+                            <label>Name</label>
+                            <div class="with-icon"><input class="form-control" value="Slack" /><i data-lucide="pencil"></i></div>
+                            <label>Bot Token</label>
+                            <div class="with-icon"><input class="form-control" id="slackBotToken" placeholder="xoxb-..."
+                                    type="password" /><i data-lucide="eye" class="toggle-secret" data-target="slackBotToken"></i>
+                            </div>
+                            <label>App Token</label>
+                            <div class="with-icon"><input class="form-control" id="slackAppToken" placeholder="xapp-..."
+                                    type="password" /><i data-lucide="eye" class="toggle-secret" data-target="slackAppToken"></i>
+                            </div>
+                            <label>Allow From (comma-separated user IDs, or * for all)</label><input
+                                class="form-control" value="*" />
+                            <label>Reply in Thread (true/false)</label><select class="form-select">
+                                <option>true</option>
+                                <option>false</option>
+                            </select>
+                            <div class="channel-detail-actions"><button class="btn btn-light test-connection"
+                                    data-channel="Slack"><i data-lucide="plug"></i> Test
+                                    Connection</button><button class="btn btn-primary save-channel"
+                                    data-channel="Slack"><i data-lucide="save"></i> Save</button></div>
+                        </div>
+                    </div>
+                    <div class="channel-card" data-channel-card="telegram">
+                        <div class="channel-summary" data-expand="telegram">
+                            <div class="channel-icon telegram">◯</div>
+                            <div class="channel-text"><strong>Telegram <span>Telegram</span> <small
+                                        id="telegramState">Disabled</small></strong>
+                                <p>Connect via Telegram Bot API long polling. Create a bot with @BotFather to get a
+                                    token.</p>
+                            </div>
+                            <div class="channel-tools"><label class="switch"><input id="telegramToggle"
+                                        type="checkbox" /><span></span></label><i data-lucide="trash-2" class="delete-channel" data-channel="Telegram"
+                                    title="Delete channel"></i></div>
+                        </div>
+                        <div class="channel-detail d-none" id="telegramDetail">
+                            <label>Name</label>
+                            <div class="with-icon"><input class="form-control" value="Telegram" /><i data-lucide="pencil"></i></div>
+                            <label>Bot Token</label>
+                            <div class="with-icon"><input class="form-control" id="telegramToken"
+                                    placeholder="123456:ABC..." type="password" /><i data-lucide="eye" class="toggle-secret" data-target="telegramToken"></i></div>
+                            <label>Allow From (comma-separated user IDs, or * for all)</label><input
+                                class="form-control" value="*" />
+                            <label>Group Policy (mention/open)</label><select class="form-select">
+                                <option>mention</option>
+                                <option>open</option>
+                            </select>
+                            <div class="channel-detail-actions"><button class="btn btn-light test-connection"
+                                    data-channel="Telegram"><i data-lucide="plug"></i> Test
+                                    Connection</button><button class="btn btn-primary save-channel"
+                                    data-channel="Telegram"><i data-lucide="save"></i>
+                                    Save</button></div>
+                        </div>
+                    </div>
+                    <div class="channel-card" data-channel-card="discord">
+                        <div class="channel-summary" data-expand="discord">
+                            <div class="channel-icon discord"><i data-lucide="message-circle"></i></div>
+                            <div class="channel-text"><strong>Discord <span>Discord</span> <small
+                                        id="discordState">Disabled</small></strong>
+                                <p>Connect via Discord Gateway WebSocket. Create an application at
+                                    discord.com/developers.</p>
+                            </div>
+                            <div class="channel-tools"><label class="switch"><input id="discordToggle"
+                                        type="checkbox" /><span></span></label><i data-lucide="trash-2" class="delete-channel" data-channel="Discord"
+                                    title="Delete channel"></i></div>
+                        </div>
+                        <div class="channel-detail d-none" id="discordDetail">
+                            <label>Name</label>
+                            <div class="with-icon"><input class="form-control" value="Discord" /><i data-lucide="pencil"></i></div>
+                            <label>Bot Token</label>
+                            <div class="with-icon"><input class="form-control" id="discordToken" placeholder="MTI..."
+                                    type="password" /><i data-lucide="eye" class="toggle-secret" data-target="discordToken"></i>
+                            </div>
+                            <label>Allow From (comma-separated user IDs, or * for all)</label><input
+                                class="form-control" value="*" />
+                            <label>Group Policy (mention/open)</label><select class="form-select">
+                                <option>mention</option>
+                                <option>open</option>
+                            </select>
+                            <div class="channel-detail-actions"><button class="btn btn-light test-connection"
+                                    data-channel="Discord"><i data-lucide="plug"></i> Test
+                                    Connection</button><button class="btn btn-primary save-channel"
+                                    data-channel="Discord"><i data-lucide="save"></i>
+                                    Save</button></div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="page" id="page-skills">
+                <div class="page-header">
+                    <div>
+                        <h2 data-i18n="skills.title"><i data-lucide="wand-sparkles" class="text-primary"></i> Skills
+                        </h2>
+                    </div><button class="btn btn-primary" data-i18n="skills.explore">▦ Explore Skills Hub</button>
+                </div>
+                <div class="content-area">
+                    <div class="section-kicker">BUILT-IN SKILLS <span>16</span></div>
+                    <div class="settings-list" id="skillsList"></div>
+                </div>
+            </section>
+            <section class="page" id="page-models">
+                <div class="page-header">
+                    <div>
+                        <h2 data-i18n="models.title"><i data-lucide="cpu" class="text-primary"></i> Models</h2>
+                        <p data-i18n="models.desc">Configure providers and models. Use model labels to assign models to
+                            sub-agents.</p>
+                    </div>
+                </div>
+                <div class="content-area models-content">
+                    <div class="model-section-title"><span>PROVIDERS</span><button
+                            class="btn btn-outline-primary btn-sm">+ Add
+                            Provider</button></div>
+                    <div class="provider-card">
+                        <div class="model-icon">▥</div>
+                        <div><strong>Platform <small>Platform</small></strong><span>Managed by platform</span></div><i data-lucide="chevron-right" class="ms-auto"></i>
+                    </div>
+                    <div class="model-section-title mt-5"><span>MODELS</span><button
+                            class="btn btn-outline-primary btn-sm">+ Add
+                            Model</button></div>
+                    <div id="modelList"></div>
+                </div>
+            </section>
+            <section class="page" id="page-usage">
+                <div class="usage-header">
+                    <div class="usage-title"><i data-lucide="chart-column" class="text-primary"></i>
+                        <h2 data-i18n="usage.title">Usage</h2>
+                    </div>
+                    <div aria-label="Usage range" class="usage-range" role="group">
+                        <button data-i18n="range.7d" data-range="7d">7 d</button><button class="active"
+                            data-i18n="range.30d" data-range="30d">30 d</button><button data-i18n="range.90d"
+                            data-range="90d">90 d</button><button data-i18n="range.1y" data-range="1y">1
+                            y</button><button data-i18n="range.all" data-range="all">All</button>
+                    </div>
+                </div>
+                <div class="usage-content">
+                    <div class="usage-stats">
+                        <div class="usage-stat"><span><i data-lucide="hash" class="text-primary"></i> <span
+                                    data-i18n="usage.totalTokens">TOTAL
+                                    TOKENS</span></span><strong>182.5K</strong><small data-i18n="usage.tokenIO">110 in /
+                                11.3K out</small></div>
+                        <div class="usage-stat"><span><i data-lucide="link" class="text-success"></i> <span
+                                    data-i18n="usage.totalCost">TOTAL COST</span></span><strong>$0.13</strong><small
+                                data-i18n="usage.estimatedSpend">Estimated spend</small></div>
+                        <div class="usage-stat"><span><i data-lucide="message-square" style="color:#f4c32f"></i> <span
+                                    data-i18n="usage.sessions">SESSIONS</span></span><strong>5</strong><small
+                                data-i18n="usage.llmTurns">14
+                                LLM turns</small></div>
+                        <div class="usage-stat"><span><i data-lucide="zap" style="color:#a981ff"></i> <span
+                                    data-i18n="usage.cacheTokens">CACHE
+                                    TOKENS</span></span><strong>171.1K</strong><small data-i18n="usage.cacheIO">120.2K
+                                read / 50.9K write</small></div>
+                    </div>
+                    <div class="usage-card usage-card-wide">
+                        <h3>Token Usage Over Time</h3>
+                        <div class="usage-bar-chart stacked">
+                            <div class="y-labels">
+                                <span>120.0K</span><span>90.0K</span><span>60.0K</span><span>30.0K</span><span>0</span>
+                            </div>
+                            <div class="chart-bars">
+                                <div class="usage-col usage-hover-target"
+                                    data-tooltip-lines="Cache Read|20,842|cache;Input|32|input;Output|2,103|output"
+                                    data-tooltip-title="2026-08-07">
+                                    <div class="stack cache" style="height:34px"></div>
+                                    <div class="stack input" style="height:1px"></div>
+                                    <div class="stack output" style="height:5px"></div><span>2026-08-07</span>
+                                </div>
+                                <div class="usage-col usage-hover-target"
+                                    data-tooltip-lines="Cache Read|101,409|cache;Input|78|input;Output|8,516|output"
+                                    data-tooltip-title="2026-08-10">
+                                    <div class="stack cache" style="height:184px"></div>
+                                    <div class="stack input" style="height:2px"></div>
+                                    <div class="stack output" style="height:14px"></div><span>2026-08-10</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="usage-legend"><span><i class="cache"></i>Cache Read</span><span><i
+                                    class="input"></i>Input</span><span><i class="output"></i>Output</span></div>
+                    </div>
+                    <div class="usage-card usage-card-wide">
+                        <h3>Estimated Cost Over Time</h3>
+                        <div class="usage-bar-chart cost-chart">
+                            <div class="y-labels">
+                                <span>$0.10</span><span>$0.07</span><span>$0.05</span><span>$0.00</span>
+                            </div>
+                            <div class="chart-bars">
+                                <div class="usage-col usage-hover-target" data-tooltip-lines="Cost|$0.04|input"
+                                    data-tooltip-title="2026-08-07">
+                                    <div class="cost-bar" style="height:70px"></div><span>2026-08-07</span>
+                                </div>
+                                <div class="usage-col usage-hover-target" data-tooltip-lines="Cost|$0.09|input"
+                                    data-tooltip-title="2026-08-10">
+                                    <div class="cost-bar" style="height:142px"></div><span>2026-08-10</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="usage-card usage-card-wide">
+                        <h3>Usage by Provider</h3>
+                        <div class="horizontal-usage usage-hover-target"
+                            data-tooltip-lines="Input|110|input;Output|11,317|output" data-tooltip-title="Platform">
+                            <span class="axis-name">Platform</span>
+                            <div class="horizontal-track">
+                                <div class="horizontal-bar input-bar" style="width:1%"></div>
+                                <div class="horizontal-bar output-bar" style="width:94%"></div>
+                            </div>
+                        </div>
+                        <div class="usage-legend centered"><span><i class="input"></i>Input</span><span><i
+                                    class="output"></i>Output</span></div>
+                    </div>
+                    <div class="usage-two-col">
+                        <div class="usage-card">
+                            <h3>Usage by Model</h3>
+                            <div class="horizontal-usage compact usage-hover-target"
+                                data-tooltip-lines="Input|110|input;Output|11,317|output"
+                                data-tooltip-title="Platform/Claude Haiku 4.5"><span class="axis-name">Platform/Claude
+                                    Haiku<br />4.5</span>
+                                <div class="horizontal-track">
+                                    <div class="horizontal-bar input-bar" style="width:1%"></div>
+                                    <div class="horizontal-bar output-bar" style="width:91%"></div>
+                                </div>
+                            </div>
+                            <div class="usage-legend centered"><span><i class="input"></i>Input</span><span><i
+                                        class="output"></i>Output</span></div>
+                        </div>
+                        <div class="usage-card">
+                            <h3>Estimated Cost by Model</h3>
+                            <div class="horizontal-usage compact usage-hover-target"
+                                data-tooltip-lines="Cost|$0.13|input" data-tooltip-title="Platform/Claude Haiku 4.5">
+                                <span class="axis-name">Platform/Claude Haiku<br />4.5</span>
+                                <div class="horizontal-track">
+                                    <div class="horizontal-bar input-bar cost-model-bar" style="width:90%"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="usage-card usage-card-wide">
+                        <h3>Usage by Source</h3>
+                        <div class="source-wrap">
+                            <div class="donut-chart usage-hover-target" data-tooltip-lines="Tokens|182.5K|input"
+                                data-tooltip-title="Web">
+                            </div>
+                            <div class="source-legend"><strong><i></i>
+                                    Web</strong><span>100.0%</span><small>$0.13</small></div>
+                        </div>
+                    </div>
+                    <div class="usage-card usage-card-wide activity-card">
+                        <h3>Session Activity (past year)</h3>
+                        <div class="activity-months">
+                            <span>Aug</span><span>Sep</span><span>Oct</span><span>Nov</span><span>Dec</span><span>Jan</span><span>Feb</span><span>Mar</span><span>Apr</span><span>May</span><span>Jun</span><span>Jul</span><span>Aug</span>
+                        </div>
+                        <div class="activity-grid">
+                            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i
+                                class="active"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i
+                                class="active"></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+                        </div>
+                        <div class="activity-legend">
+                            <span>Less</span><i></i><i></i><i></i><i></i><i></i><span>More</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section class="page" id="page-memory">
+                <div class="placeholder-page">
+                    <h2 data-i18n="memory.title">Memory</h2>
+                    <p>此頁保留產品導覽位置，Demo 第一版不實作。</p>
+                </div>
+            </section>
+            <section class="page" id="page-environment">
+                <div class="placeholder-page">
+                    <h2 data-i18n="environment.title">Environment</h2>
+                    <p>此頁保留產品導覽位置，Demo 第一版不實作。</p>
+                </div>
+            </section>
+            <section class="page" id="page-integrations">
+                <div class="integration-header">
+                    <div class="integration-title"><i data-lucide="plug"></i>
+                        <h2 data-i18n="integrations.title">Integrations</h2>
+                    </div>
+                </div>
+                <div class="integration-tabs"><button class="active" data-i18n="integrations.tab"
+                        type="button">Integrations</button><button data-i18n="integrations.sessions"
+                        type="button">Sessions</button></div>
+                <div class="integration-content">
+                    <div class="api-key-panel">
+                        <div class="api-key-head">
+                            <div><i data-lucide="key-round"></i><strong>API Keys</strong><span>0</span></div><button
+                                class="btn btn-primary" data-i18n="integrations.generate" id="generateApiKey">+ Generate
+                                Key</button>
+                        </div>
+                        <div class="api-key-empty">No API keys. Generate one to authenticate integration requests.</div>
+                    </div>
+                    <div class="integration-section-head">
+                        <h3>Endpoints</h3>
+                        <div><button class="btn btn-light" data-i18n="integrations.docs" id="apiDocsBtn"><i data-lucide="file-text"></i> API Docs</button><button
+                                class="btn btn-primary" data-i18n="integrations.add" id="addIntegrationBtn">+ Add
+                                Integration</button></div>
+                    </div>
+                    <div class="integration-empty"><i data-lucide="plug"></i><strong>No integrations
+                            configured.</strong><span>Add an integration to get started.</span></div>
+                </div>
+            </section>
+            <section class="page" id="page-cost">
+                <div class="cost-header">
+                    <div class="cost-title"><i data-lucide="coins" class="text-primary"></i>
+                        <h2 data-i18n="cost.title">Cost History</h2>
+                    </div>
+                    <div class="cost-head-actions">
+                        <div class="balance-pill"><span data-i18n="cost.balance">Balance:</span> $4.86</div>
+                        <div class="usage-range cost-range"><button data-i18n="range.7d">7 d</button><button
+                                class="active" data-i18n="range.30d">30 d</button><button data-i18n="range.90d">90
+                                d</button><button data-i18n="range.all">All</button></div>
+                    </div>
+                </div>
+                <div class="cost-content">
+                    <div class="cost-stats">
+                        <div class="usage-stat">
+                            <span><i data-lucide="link" class="text-success"></i>
+                                <span data-i18n="usage.totalCost">TOTAL COST</span>
+                            </span>
+                            <strong>$0.14</strong><small data-i18n="usage.actualSpend">Actual spend</small>
+                        </div>
+                        <div class="usage-stat">
+                            <span><i data-lucide="hash" class="text-primary"></i>
+                                <span data-i18n="usage.request">REQUESTS</span>
+                            </span>
+                            <strong>15</strong><small data-i18n="usage.llmCalls">LLM calls</small>
+                        </div>
+                        <div class="usage-stat"><span><i data-lucide="message-square" style="color:#f4c32f"></i> <span
+                                    data-i18n="usage.sessions">SESSIONS</span></span><strong>5</strong><small
+                                data-i18n="usage.trackedCosts">With tracked costs</small></div>
+                    </div>
+                    <div class="cost-panel">
+                        <div class="cost-panel-head">
+                            <h3><i data-lucide="trending-down" class="text-primary"></i> Balance History</h3><span>15
+                                transaction(s)</span>
+                        </div>
+                        <div class="balance-chart-wrap">
+                            <div class="balance-y">
+                                <span>$8</span><span>$6</span><span>$4</span><span>$2</span><span>$0</span>
+                            </div>
+                            <div class="balance-chart">
+                                <div class="balance-area"></div>
+                                <svg class="balance-line-svg" viewBox="0 0 100 100" preserveAspectRatio="none"
+                                    aria-hidden="true">
+                                    <polyline points="0,56 30,56 50,12 70,56 100,56"></polyline>
+                                </svg><span class="balance-date left">8月7日</span><span
+                                    class="balance-date right">8月10日</span>
+                            </div>
+                        </div>
+                        <div class="table-responsive cost-table-wrap">
+                            <table class="table cost-table align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Type</th>
+                                        <th>Amount</th>
+                                        <th>Balance</th>
+                                        <th>Description</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>8月10日 下午04:18</td>
+                                        <td><span class="usage-badge">usage</span></td>
+                                        <td class="negative">−0.0027</td>
+                                        <td>$4.8649</td>
+                                        <td>claude-ocis/claude-haiku-4-5: 1353 in / 268 out</td>
+                                    </tr>
+                                    <tr>
+                                        <td>8月10日 下午02:41</td>
+                                        <td><span class="usage-badge">usage</span></td>
+                                        <td class="negative">−0.0160</td>
+                                        <td>$4.8676</td>
+                                        <td>claude-ocis/claude-haiku-4-5: 6 in / 2778 out</td>
+                                    </tr>
+                                    <tr>
+                                        <td>8月10日 下午02:41</td>
+                                        <td><span class="usage-badge">usage</span></td>
+                                        <td class="negative">−0.0113</td>
+                                        <td>$4.8837</td>
+                                        <td>claude-ocis/claude-haiku-4-5: 7 in / 93 out</td>
+                                    </tr>
+                                    <tr>
+                                        <td>8月10日 下午02:41</td>
+                                        <td><span class="usage-badge">usage</span></td>
+                                        <td class="negative">−0.0055</td>
+                                        <td>$4.8949</td>
+                                        <td>claude-ocis/claude-haiku-4-5: 6 in / 245 out</td>
+                                    </tr>
+                                    <tr>
+                                        <td>8月10日 下午02:41</td>
+                                        <td><span class="usage-badge">usage</span></td>
+                                        <td class="negative">−0.0024</td>
+                                        <td>$4.9005</td>
+                                        <td>claude-ocis/claude-haiku-4-5: 10 in / 201 out</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="cost-panel session-cost-panel">
+                        <div class="cost-panel-head">
+                            <h3>Cost by Session</h3>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table cost-table session-cost-table align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Session</th>
+                                        <th>Requests</th>
+                                        <th>In / Out</th>
+                                        <th>Cost</th>
+                                        <th>Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td class="muted">Untracked</td>
+                                        <td>1</td>
+                                        <td>1.4K / 268</td>
+                                        <td>$0.0027</td>
+                                        <td>8月10日 下午04:18</td>
+                                    </tr>
+                                    <tr>
+                                        <td>MyAgent 推播頻道設定指南</td>
+                                        <td>4</td>
+                                        <td>29 / 3.3K</td>
+                                        <td>$0.04</td>
+                                        <td>8月10日 下午02:41</td>
+                                    </tr>
+                                    <tr>
+                                        <td>資料分析結果呈現方式</td>
+                                        <td>3</td>
+                                        <td>23 / 2.7K</td>
+                                        <td>$0.02</td>
+                                        <td>8月10日 下午02:39</td>
+                                    </tr>
+                                    <tr>
+                                        <td>排程任務使用指南</td>
+                                        <td>3</td>
+                                        <td>26 / 2.5K</td>
+                                        <td>$0.03</td>
+                                        <td>8月10日 下午02:35</td>
+                                    </tr>
+                                    <tr>
+                                        <td>資料分析、圖表、排程、推播功能</td>
+                                        <td>2</td>
+                                        <td>16 / 1.9K</td>
+                                        <td>$0.02</td>
+                                        <td>8月7日 下午04:48</td>
+                                    </tr>
+                                    <tr>
+                                        <td>AI助手能力介紹</td>
+                                        <td>2</td>
+                                        <td>16 / 933</td>
+                                        <td>$0.02</td>
+                                        <td>8月7日 下午04:46</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <div class="toast-container position-fixed top-0 end-0 p-3">
+        <div class="toast" id="demoToast" role="alert">
+            <div class="toast-header"><strong class="me-auto">MyAgent Demo</strong><button class="btn-close"
+                    data-bs-dismiss="toast" type="button"></button></div>
+            <div class="toast-body" id="toastBody"></div>
+        </div>
+    </div>
+
+    <div aria-hidden="true" class="product-tour" id="productTour">
+        <div class="tour-mask tour-mask-top"></div>
+        <div class="tour-mask tour-mask-left"></div>
+        <div class="tour-mask tour-mask-right"></div>
+        <div class="tour-mask tour-mask-bottom"></div>
+        <section aria-live="polite" class="tour-tooltip" role="dialog">
+            <div class="tour-tooltip-head">
+                <span class="tour-step-label" id="tourStepLabel">第 1／7 步</span>
+                <button aria-label="跳過導覽" class="tour-close" id="tourSkipStep" type="button"><i data-lucide="x"></i></button>
+            </div>
+            <h2 id="tourStepTitle">AI 助手能力介紹</h2>
+            <p id="tourStepDescription">先看看 MyAgent 能協助哪些工作。</p>
+            <button class="tour-action-hint" id="tourNextStep" type="button">
+                <i data-lucide="mouse-pointer-click"></i>
+                <span>點選框選項目，或按此繼續</span>
+                <i data-lucide="arrow-right"></i>
+            </button>
+        </section>
+    </div>
+
+    <div aria-hidden="true" class="tour-dialog-layer" id="tourDialogLayer">
+        <section aria-labelledby="tourDialogTitle" aria-modal="true" class="tour-dialog" role="dialog">
+            <div class="tour-brand-icon"><img alt="AFS MyAgent" src="images/icon_MyAgent_128.svg"></div>
+            <span class="tour-eyebrow" id="tourDialogEyebrow">PRODUCT TOUR</span>
+            <h2 id="tourDialogTitle">歡迎體驗 AFS MyAgent</h2>
+            <p id="tourDialogDescription">透過七個重點，快速了解 MyAgent 的主要功能與操作方式。</p>
+            <div class="tour-dialog-actions">
+                <button class="tour-secondary-btn" id="tourSkipWelcome" type="button">稍後再說</button>
+                <button class="tour-primary-btn" id="tourStart" type="button">開始導覽 <i data-lucide="arrow-right"></i></button>
+            </div>
+        </section>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="analysisResultModalLabel" class="modal fade analysis-result-modal"
+        id="analysisResultModal" tabindex="-1">
+        <div class="modal-dialog modal-xl modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modal-title fs-6" id="analysisResultModalLabel">資料分析結果示例</h2>
+                    <button aria-label="關閉" class="btn-close" data-bs-dismiss="modal" type="button"></button>
+                </div>
+                <div class="modal-body">
+                    <iframe src="資料分析結果示例.html" title="資料分析結果示例完整報告"></iframe>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+    <script>
+      window.renderLucideIcons = function () {
+        if (window.lucide) {
+          lucide.createIcons({ attrs: { 'stroke-width': 1.8 } });
+        }
+      };
+      document.addEventListener('DOMContentLoaded', window.renderLucideIcons);
+    </script>
+    <script src="js/i18n.js"></script>
+    <script src="js/app.js"></script>
+</body>
+
+</html>

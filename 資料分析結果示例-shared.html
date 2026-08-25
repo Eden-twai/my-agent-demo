@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>資料分析結果示例 — Shared</title>
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: #fff;
+    }
+
+    .shared-header {
+      height: 40px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 0 11px;
+      border-top: 1px solid #2d75d9;
+      background: #10192d;
+      color: #aab3c3;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .shared-header strong {
+      color: #fff;
+      font-weight: 700;
+    }
+
+    .shared-header .report-name {
+      color: #fff;
+    }
+
+    .shared-report {
+      display: block;
+      width: 100%;
+      height: calc(100% - 40px);
+      border: 0;
+      background: #fff;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="shared-header">
+    <span>Shared by</span>
+    <strong>eden-chen</strong>
+    <span>·</span>
+    <span class="report-name">資料分析結果示例</span>
+  </header>
+  <iframe class="shared-report" src="資料分析結果示例.html" title="資料分析結果示例"></iframe>
+</body>
+
+</html>
